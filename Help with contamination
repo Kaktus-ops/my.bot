@@ -1,0 +1,46 @@
+import discord
+
+intents = discord.Intents.default()
+intents.message_content = True
+client = discord.Client(intents=intents)
+
+@client.event
+async def on_ready():
+    print('We have logged in as {client.user}')
+
+@client.event
+async def on_message(message):
+    if message.author == client.user:
+        return
+    if message.content.startswith('Загрязнение'):
+        await message.channel.send('''Выбери что ты хочешь узнать(напиши цифру):
+        1) Как утилизирывать батарейки?
+        2) Как утилизирывать стекло?
+        3) Пять идей как уменьшить загрязнение! ''')
+    elif message.content.startswith('1.'):
+        await message.channel.send('''Выбрасывать отработанные батарейки нужно только в 
+специальные контейнеры или специализированные пункты приема 
+и ни в коем случае в мусорное ведро вместе с другими отходами не кидать.''')
+    elif message.content.startswith('2.'):
+        await message.channel.send('''Есть разные способы утилизации стекла: 
+сдать в пункты приема или подарить организациям и людям, 
+которые могут использовать его повторно. 
+Специальные контейнеры для стекла обычно зеленого цвета и имеют свою маркировку.''')
+    elif message.content.startswith('3.'):
+        await message.channel.send('''1) Сортировка мусора 
+2) Отказ от одноразового пластика 
+3) Экономия электроэнергии 
+4) Повторное использование вещей 
+5) Сажайте растения''')
+    elif message.content.startswith('4.'):
+        await message.channel.send()
+    else:
+        await message.channel.send(message.content)
+
+@client.event()
+async def recycle(ctx):
+    with open('images/mem1.jpg', 'rb') as f:
+        # В переменную кладем файл, который преобразуется в файл библиотеки Discord!
+        picture = discord.File(f)
+   # Можем передавать файл как параметр!
+    await ctx.send(file=picture)
